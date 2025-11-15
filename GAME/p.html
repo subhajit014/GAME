@@ -1,0 +1,27 @@
+// ---- ASSET LOADER ----
+const assets = {};
+const assetList = [
+  ['cat','cat.png'],
+  ['fish','fish.png'],
+  ['treat','treat.png'],
+  ['rotten','rotten.png'],
+  ['bg','bg.png']
+];
+let assetsLoaded = 0;
+
+function loadAssets(callback){
+  assetList.forEach(([key,src])=>{
+    const img = new Image();
+    img.onload = ()=>{
+      assets[key] = img;
+      assetsLoaded++;
+      if(assetsLoaded === assetList.length) callback();
+    };
+    img.onerror = ()=>{
+      console.warn('Asset failed to load:', src);
+      assetsLoaded++;
+      if(assetsLoaded === assetList.length) callback();
+    };
+    img.src = src;
+  });
+}
